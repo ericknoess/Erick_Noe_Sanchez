@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erick Noé | Bio-Digital Lead</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=JetBrains+Mono:wght@300;500&display=swap');
+
+        :root {
+            --primary: #04ADBF;
+            --accent: #39ff14;
+            --bg-dark: #020505;
+            --glass-ultra-thin: rgba(10, 20, 20, 0.04); 
+            --border: rgba(4, 173, 191, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #f0f0f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        #dna-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            filter: blur(0.5px);
+        }
+
+        header {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            background: rgba(2, 5, 5, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -1px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px; background: var(--accent);
+            border-radius: 50%; box-shadow: 0 0 10px var(--accent);
+        }
+
+        nav a {
+            color: #888; text-decoration: none; font-size: 0.9rem;
+            margin-left: 30px; transition: 0.3s; font-weight: 500;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 120px 5% 80px 5%;
+        }
+
+        .content-card {
+            background: var(--glass-ultra-thin); 
+            backdrop-filter: blur(4px); 
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 60px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 50px;
+            max-width: 1300px;
+            width: 100%;
+            z-index: 10;
+            transition: border-color 0.5s ease, background 0.5s ease;
+        }
+
+        .content-card.reverse { grid-template-columns: 0.8fr 1.2fr; }
+
+        .eyebrow {
+            text-transform: uppercase; color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem; letter-spacing: 4px; display: block; margin-bottom: 15px;
+        }
+
+        h2 { 
+            font-size: 3.2rem; 
+            font-weight: 700; 
+            margin-bottom: 25px; 
+            letter-spacing: -2px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .text_info { 
+            font-size: 1.15rem; 
+            color: #f8fafc; 
+            font-weight: 400; 
+            text-align: justify;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .image-container {
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 20;
+        }
+
+        .circle_photo, .circle_photo_2, .circle_photo_3 {
+            width: 350px; height: 350px; 
+            background-size: cover; background-position: center;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 40px rgba(0,0,0,0.6);
+            animation: morph 8s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        .circle_photo { background-image: url('/img/foto_erick_normal.svg'); }
+        .circle_photo_2 { 
+            background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop'); 
+            border-color: var(--accent); 
+        }
+        .circle_photo_3 { 
+            background-image: url('https://images.unsplash.com/photo-1504164996022-09080787b6b3?q=80&w=800&auto=format&fit=crop'); 
+        }
+
+        @keyframes morph {
+            0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 70%; }
+            50% { border-radius: 70% 30% 30% 70% / 60% 40% 60% 40%; }
+        }
+
+        footer { padding: 60px 5%; border-top: 1px solid var(--border); text-align: center; background: transparent; position: relative; z-index: 50;}
+
+        @media (max-width: 1000px) {
+            .content-card, .content-card.reverse { grid-template-columns: 1fr; text-align: center; padding: 40px; gap: 30px;}
+            .image-container { order: -1; }
+            .circle_photo, .circle_photo_2, .circle_photo_3 { width: 280px; height: 280px; }
+            h2 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="dna-canvas"></canvas>
+
+    <header>
+        <div class="logo"><div class="status-dot"></div>ERICK_NOE_SÁNCHEZ // BIO-DEVELOPER</div>
+        <nav>
+            <a href="#">RESUME</a>
+            <a href="#">PROJECTS</a>
+            <a href="#">CONTACT</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="content-card reveal outter">
+                <div class="text-block">
+                    <span class="eyebrow">Profile // 01</span>
+                    <h2 class="panelTitleID1 title-reveal">Biotechnology Pioneer</h2>
+                    <div class="text_info panelTitleID1 para-reveal">
+                        <p>"I’m passionate about biotechnology, coding, and data analytics. I studied Biotechnology and have over ten years of experience in biotechnological processes, combining science with programming to solve challenging problems."</p>
+                    </div>
+                </div>
+                <div class="image-container">
+                    <div class="circle_photo"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="hero-section">
+            <div class="content-card reverse reveal outter2">
+                <div class="image-container">
+                    <div class="circle_photo_2"></div>
+                </div>
+                <div class="text-block">
+                    <span class="eyebrow">Leadership // 02</span>
+                    <h2 class="panelTitleID2 title-reveal">Team Strategist</h2>
+                    <div class="text_info panelTitleID2 para-reveal">
+                        <p>"Currently, I work as a Team Leader in production, overseeing the manufacturing of recombinant proteins while ensuring compliance with FDA and COFEPRIS gold standards for monoclonal antibody production."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="hero-section">
+            <div class="content-card reveal outter3">
+                <div class="text-block">
+                    <span class="eyebrow">Innovation // 03</span>
+                    <h2 class="panelTitleID3 title-reveal">+100% Production Yield</h2>
+                    <div class="text_info panelTitleID3 para-reveal">
+                        <p>"By architecting custom Django ecosystems, I’ve automated data flows that pinpoint inefficiencies in real-time. This integration has successfully increased production yield through data-driven decisions."</p>
+                    </div>
+                </div>
+                <div class="image-container">
+                    <div class="circle_photo_3"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p style="color: var(--primary); font-family: 'JetBrains Mono'; font-size: 1.1rem; margin-bottom: 10px;">ericknoess@gmail.com</p>
+        <p style="font-size: 0.8rem; opacity: 0.5;">© 2026 Erick Noé Sánchez Sánchez</p>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('dna-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let activeGlow = false;
+        const bin = "01001110011000010110010001101001011000010100010101110010011010010110001101101011";
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        let frame = 0;
+        function draw() {
+            ctx.fillStyle = "rgba(2, 5, 5, 0.25)";
+            ctx.fillRect(0, 0, width, height);
+            
+            // VELOCIDAD DE MOVIMIENTO GENERAL (Reducida)
+            frame += 0.002;
+
+            const cx = width / 2;
+            const radius = width < 800 ? 150 : 350;
+
+            for (let y = 0; y < height; y += 14) {
+                const angle = frame + (y * 0.0035);
+                const x1 = cx + Math.sin(angle) * radius;
+                const x2 = cx + Math.sin(angle + Math.PI) * radius;
+
+                if (Math.round(y/14) % 2 === 0) {
+                    ctx.strokeStyle = activeGlow ? "rgba(57, 255, 20, 0.2)" : "rgba(4, 173, 191, 0.1)";
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke();
+                    
+                    // VELOCIDAD DE CAMBIO DE BITS (Mucho más lenta)
+                    const bit = bin[Math.floor((y + frame * 2) % bin.length)];
+                    ctx.fillStyle = activeGlow ? "rgba(57, 255, 20, 0.9)" : "rgba(4, 173, 191, 0.6)";
+                    ctx.font = activeGlow ? "bold 12px 'JetBrains Mono'" : "500 11px 'JetBrains Mono'";
+                    ctx.fillText(bit, (x1 + x2) / 2, y + 4);
+                }
+
+                ctx.fillStyle = "rgba(4, 173, 191, 0.4)";
+                ctx.beginPath(); ctx.arc(x1, y, 2, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = "rgba(126, 166, 41, 0.4)";
+                ctx.beginPath(); ctx.arc(x2, y, 2, 0, Math.PI*2); ctx.fill();
+            }
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', resize);
+        resize(); draw();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger, SplitText);
+
+            const animateSection = (outter, textID, dir) => {
+                let title = document.querySelector(`${outter} .title-reveal`);
+                let para = document.querySelector(`${outter} .para-reveal`);
+                let split = new SplitText(title, {type: "chars, words"});
+                
+                gsap.timeline({
+                    scrollTrigger: {
+                        trigger: outter,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse",
+                        onEnter: () => { activeGlow = true; },
+                        onLeaveBack: () => { activeGlow = false; }
+                    }
+                })
+                .from(outter, { x: dir, opacity: 0, duration: 1, ease: "power3.out" })
+                .from(split.chars, { 
+                    opacity: 0, 
+                    y: 20, 
+                    stagger: 0.005, 
+                    duration: 0.6, 
+                    ease: "power2.out"
+                }, "-=0.5")
+                .from(para, { opacity: 0, y: 15, duration: 0.8, ease: "power1.out"}, "-=0.3");
+            };
+
+            animateSection(".outter", ".panelTitleID1", -50);
+            animateSection(".outter2", ".panelTitleID2", 50);
+            animateSection(".outter3", ".panelTitleID3", -50);
+        });
+    </script>
+</body>
+</html>
